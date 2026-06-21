@@ -16,6 +16,10 @@ A modern portfolio website for a mathematics teacher.
 - CSS3
 - JavaScript
 
+## Preview
+
+![Website Preview](screenshots/home.png)
+
 ## Live Demo
 
 https://kimkazi.github.io/math-teacher-portfolio/
