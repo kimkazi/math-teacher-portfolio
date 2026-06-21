@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>نگار کمالی — مدرس ریاضیات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,800&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET & BASE ─────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:   #0C0C0E;
+  --white: #FFFFFF;
+  --off:   #F2F2F0;
+  --muted: #888890;
+  --line:  rgba(255,255,255,0.08);
+  --v:     #6C5CE7;
+  --v2:    #8B7FF0;
+  --v3:    #4A3DBF;
+  --r-dot: #E85D75;
+  --h-dot: #00BFA6;
+  --c-dot: #F5A623;
+  --ease:  cubic-bezier(.25,.46,.45,.94);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:'Vazirmatn',sans-serif;
+  background:var(--ink);
+  color:var(--white);
+  direction:rtl;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{text-decoration:none;color:inherit}
+
+/* ── NAV ──────────────────────────────────────── */
+nav{
+  position:fixed;top:0;right:0;left:0;
+  z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  height:68px;
+  border-bottom:1px solid var(--line);
+  background:rgba(12,12,14,0.85);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+}
+.nav-logo{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1rem;font-weight:800;
+  letter-spacing:0.04em;
+  color:var(--white);
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo::before{
+  content:'';
+  display:inline-block;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--v);
+}
+.nav-links{
+  display:flex;align-items:center;
+  gap:36px;list-style:none;
+}
+.nav-links a{
+  font-size:0.82rem;font-weight:500;
+  color:var(--muted);
+  letter-spacing:0.06em;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{
+  font-size:0.82rem;font-weight:700;
+  background:var(--v);
+  color:var(--white);
+  padding:9px 22px;
+  border-radius:4px;
+  letter-spacing:0.04em;
+  transition:background .2s,transform .2s;
+}
+.nav-cta:hover{background:var(--v2);transform:translateY(-1px)}
+
+/* ── HERO ─────────────────────────────────────── */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:0 48px 80px;
+  overflow:hidden;
+}
+/* grid canvas */
+#gridCanvas{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  opacity:0.35;
+  pointer-events:none;
+}
+/* violet glow blob */
+.hero-glow{
+  position:absolute;
+  top:-10%;right:-5%;
+  width:60vw;height:60vw;
+  max-width:900px;max-height:900px;
+  background:radial-gradient(ellipse at center, rgba(108,92,231,0.22) 0%, transparent 70%);
+  pointer-events:none;
+  border-radius:50%;
+}
+.hero-content{
+  position:relative;z-index:2;
+  max-width:900px;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:0.72rem;font-weight:600;
+  color:var(--v2);
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  margin-bottom:32px;
+  opacity:0;
+  animation:fadeUp .7s var(--ease) .1s forwards;
+}
+.hero-tag::before{
+  content:'';
+  display:inline-block;
+  width:20px;height:1px;
+  background:var(--v);
+}
+.hero-h1{
+  font-family:'Vazirmatn',sans-serif;
+  font-size:clamp(3rem,8vw,7.5rem);
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-0.02em;
+  color:var(--white);
+  margin-bottom:28px;
+  opacity:0;
+  animation:fadeUp .8s var(--ease) .25s forwards;
+}
+.hero-h1 em{
+  font-style:normal;
+  color:var(--v2);
+}
+.hero-sub{
+  max-width:520px;
+  font-size:clamp(0.95rem,1.6vw,1.1rem);
+  font-weight:400;
+  line-height:1.9;
+  color:rgba(255,255,255,0.52);
+  margin-bottom:44px;
+  opacity:0;
+  animation:fadeUp .8s var(--ease) .4s forwards;
+}
+.hero-actions{
+  display:flex;align-items:center;gap:20px;
+  flex-wrap:wrap;
+  opacity:0;
+  animation:fadeUp .8s var(--ease) .55s forwards;
+}
+.btn-main{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Vazirmatn',sans-serif;
+  font-size:0.92rem;font-weight:700;
+  background:var(--v);color:var(--white);
+  padding:16px 36px;
+  border-radius:4px;
+  border:none;cursor:pointer;
+  transition:background .25s,transform .25s,box-shadow .25s;
+  letter-spacing:0.03em;
+}
+.btn-main:hover{
+  background:var(--v2);
+  transform:translateY(-2px);
+  box-shadow:0 12px 40px rgba(108,92,231,0.35);
+}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Vazirmatn',sans-serif;
+  font-size:0.88rem;font-weight:500;
+  color:var(--muted);
+  background:none;border:none;cursor:pointer;
+  transition:color .2s;
+  letter-spacing:0.02em;
+}
+.btn-ghost:hover{color:var(--white)}
+.hero-scroll{
+  position:absolute;
+  bottom:40px;left:48px;
+  display:flex;align-items:center;gap:12px;
+  font-size:0.7rem;letter-spacing:0.14em;
+  color:rgba(255,255,255,0.25);
+  text-transform:uppercase;
+  opacity:0;
+  animation:fadeUp .8s var(--ease) .9s forwards;
+}
+.scroll-line{
+  width:40px;height:1px;
+  background:rgba(255,255,255,0.15);
+  position:relative;overflow:hidden;
+}
+.scroll-line::after{
+  content:'';
+  position:absolute;
+  top:0;right:-100%;
+  width:100%;height:100%;
+  background:var(--v);
+  animation:slide 1.8s ease-in-out infinite;
+}
+@keyframes slide{0%{right:-100%}100%{right:100%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── MARQUEE STRIP ───────────────────────────── */
+.strip{
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  overflow:hidden;
+  padding:18px 0;
+  white-space:nowrap;
+  background:rgba(108,92,231,0.04);
+}
+.strip-inner{
+  display:inline-flex;align-items:center;gap:48px;
+  animation:marquee 22s linear infinite;
+}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.strip-item{
+  font-size:0.75rem;font-weight:600;
+  color:rgba(255,255,255,0.3);
+  letter-spacing:0.2em;text-transform:uppercase;
+  display:flex;align-items:center;gap:16px;
+}
+.strip-dot{width:4px;height:4px;border-radius:50%;background:var(--v);flex-shrink:0}
+
+/* ── CLASSES SECTION ─────────────────────────── */
+.section{padding:120px 48px}
+.sec-header{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  margin-bottom:72px;
+  gap:24px;
+  flex-wrap:wrap;
+}
+.sec-label{
+  font-size:0.72rem;font-weight:600;
+  color:var(--v2);
+  letter-spacing:0.2em;text-transform:uppercase;
+  margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-label::before{
+  content:'';
+  display:inline-block;width:16px;height:1px;
+  background:var(--v);
+}
+.sec-title{
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:900;
+  line-height:1.1;
+  color:var(--white);
+  letter-spacing:-0.02em;
+}
+.sec-note{
+  font-size:0.88rem;color:var(--muted);
+  max-width:280px;line-height:1.7;text-align:left;
+}
+
+/* subject group header */
+.group-label{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:20px;
+}
+.group-dot{
+  width:10px;height:10px;border-radius:50%;flex-shrink:0;
+}
+.group-name{
+  font-size:0.72rem;font-weight:700;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--muted);
+}
+.group-line{
+  flex:1;height:1px;
+  background:var(--line);
+}
+
+/* cards grid */
+.cards-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+  margin-bottom:2px;
+}
+.cards-row.two{grid-template-columns:repeat(2,1fr)}
+
+.card{
+  position:relative;
+  background:#111113;
+  padding:36px 32px;
+  min-height:200px;
+  display:flex;flex-direction:column;
+  justify-content:space-between;
+  cursor:default;
+  overflow:hidden;
+  transition:background .4s var(--ease);
+}
+.card::before{
+  content:'';
+  position:absolute;inset:0;
+  opacity:0;
+  transition:opacity .4s var(--ease);
+}
+/* color fills on hover */
+.card.r::before{background:radial-gradient(ellipse at 80% 20%,rgba(232,93,117,0.15) 0%,transparent 70%)}
+.card.h::before{background:radial-gradient(ellipse at 80% 20%,rgba(0,191,166,0.12) 0%,transparent 70%)}
+.card.c::before{background:radial-gradient(ellipse at 80% 20%,rgba(245,166,35,0.12) 0%,transparent 70%)}
+.card:hover{background:#161618}
+.card:hover::before{opacity:1}
+
+.card-num{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:0.7rem;font-weight:800;
+  letter-spacing:0.16em;
+  color:rgba(255,255,255,0.18);
+  margin-bottom:auto;
+}
+.card-bottom{margin-top:auto}
+.card-dot-wrap{margin-bottom:14px}
+.card-dot{
+  width:8px;height:8px;border-radius:50%;
+  display:inline-block;
+  transition:transform .3s var(--ease),box-shadow .3s;
+}
+.card:hover .card-dot{transform:scale(1.6)}
+.card.r .card-dot{background:var(--r-dot);box-shadow:0 0 0 0 rgba(232,93,117,0)}
+.card.h .card-dot{background:var(--h-dot);box-shadow:0 0 0 0 rgba(0,191,166,0)}
+.card.c .card-dot{background:var(--c-dot);box-shadow:0 0 0 0 rgba(245,166,35,0)}
+.card:hover.r .card-dot{box-shadow:0 0 12px 4px rgba(232,93,117,0.4)}
+.card:hover.h .card-dot{box-shadow:0 0 12px 4px rgba(0,191,166,0.4)}
+.card:hover.c .card-dot{box-shadow:0 0 12px 4px rgba(245,166,35,0.4)}
+
+.card-title{
+  font-size:1.35rem;font-weight:800;
+  color:var(--white);
+  margin-bottom:8px;
+  line-height:1.2;
+}
+.card-desc{
+  font-size:0.78rem;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+/* subject groups spacing */
+.subject-group{margin-bottom:40px}
+.subject-group:last-child{margin-bottom:0}
+
+/* ── ABOUT ───────────────────────────────────── */
+.about-section{
+  padding:0 0 120px;
+  position:relative;
+}
+.about-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-top:1px solid var(--line);
+}
+.about-left{
+  padding:80px 48px;
+  border-right:1px solid var(--line);
+  position:relative;
+  overflow:hidden;
+}
+.about-visual{
+  width:100%;
+  aspect-ratio:3/4;
+  max-height:480px;
+  background:linear-gradient(160deg,#1a1a20 0%,#111117 100%);
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+  overflow:hidden;
+}
+.about-visual-glow{
+  position:absolute;
+  bottom:-30%;left:50%;
+  transform:translateX(-50%);
+  width:70%;height:70%;
+  background:radial-gradient(ellipse, rgba(108,92,231,0.25) 0%,transparent 70%);
+  pointer-events:none;
+}
+.about-avatar-text{
+  font-size:5rem;position:relative;z-index:2;
+  filter:grayscale(0.2);
+}
+.about-initials{
+  position:absolute;
+  bottom:28px;right:28px;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:0.7rem;font-weight:800;
+  letter-spacing:0.18em;
+  color:rgba(255,255,255,0.2);
+}
+.about-right{
+  padding:80px 48px;
+  display:flex;flex-direction:column;
+  justify-content:center;
+}
+.about-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:0.7rem;font-weight:600;
+  color:var(--v2);
+  letter-spacing:0.18em;text-transform:uppercase;
+  margin-bottom:28px;
+}
+.about-eyebrow::before{
+  content:'';
+  display:inline-block;width:14px;height:1px;
+  background:var(--v);
+}
+.about-name{
+  font-size:clamp(2rem,3.5vw,3rem);
+  font-weight:900;
+  line-height:1.1;
+  color:var(--white);
+  letter-spacing:-0.02em;
+  margin-bottom:8px;
+}
+.about-role{
+  font-size:0.88rem;color:var(--muted);
+  margin-bottom:40px;
+}
+.about-bio{
+  font-size:0.95rem;
+  line-height:2;
+  color:rgba(255,255,255,0.62);
+  margin-bottom:48px;
+}
+.about-bio strong{color:var(--white);font-weight:700}
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:0;
+  border:1px solid var(--line);
+  border-radius:4px;
+  overflow:hidden;
+  margin-bottom:44px;
+}
+.stat{
+  padding:24px 20px;
+  border-left:1px solid var(--line);
+  text-align:center;
+}
+.stat:last-child{border-left:none}
+.stat-n{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:2rem;font-weight:800;
+  color:var(--white);
+  display:block;
+  line-height:1;
+  margin-bottom:6px;
+}
+.stat-l{
+  font-size:0.72rem;color:var(--muted);
+  font-weight:500;letter-spacing:0.04em;
+}
+
+/* ── CTA STRIP ───────────────────────────────── */
+.cta-strip{
+  margin:0 48px;
+  border-radius:8px;
+  background:var(--v);
+  background:linear-gradient(135deg,var(--v3) 0%,var(--v) 50%,var(--v2) 100%);
+  padding:56px 64px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:32px;
+  flex-wrap:wrap;
+  position:relative;
+  overflow:hidden;
+}
+.cta-strip::before{
+  content:'∫ ∑ π ∞';
+  position:absolute;
+  left:30px;top:50%;transform:translateY(-50%);
+  font-size:5rem;font-weight:900;
+  font-family:'Georgia',serif;
+  color:rgba(255,255,255,0.05);
+  letter-spacing:0.1em;
+  pointer-events:none;
+  white-space:nowrap;
+}
+.cta-text h2{
+  font-size:clamp(1.4rem,3vw,2rem);
+  font-weight:900;
+  color:var(--white);
+  line-height:1.2;
+  margin-bottom:8px;
+  letter-spacing:-0.01em;
+}
+.cta-text p{
+  font-size:0.88rem;
+  color:rgba(255,255,255,0.65);
+  line-height:1.7;
+}
+.btn-white{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Vazirmatn',sans-serif;
+  font-size:0.9rem;font-weight:800;
+  background:var(--white);color:var(--v);
+  padding:16px 36px;
+  border-radius:4px;
+  border:none;cursor:pointer;
+  white-space:nowrap;
+  transition:transform .2s,box-shadow .2s;
+  letter-spacing:0.02em;
+  flex-shrink:0;
+}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,0,0,0.25)}
+
+/* ── FOOTER ──────────────────────────────────── */
+footer{
+  border-top:1px solid var(--line);
+  padding:32px 48px;
+  display:flex;align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-logo{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:0.88rem;font-weight:800;
+  color:rgba(255,255,255,0.35);
+  letter-spacing:0.06em;
+}
+.footer-copy{
+  font-size:0.75rem;color:rgba(255,255,255,0.2);
+}
+.footer-links{display:flex;gap:24px}
+.footer-links a{
+  font-size:0.75rem;color:rgba(255,255,255,0.3);
+  transition:color .2s;
+}
+.footer-links a:hover{color:var(--white)}
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media(max-width:900px){
+  nav{padding:0 24px}
+  .hero{padding:0 24px 64px}
+  .section{padding:80px 24px}
+  .about-inner{grid-template-columns:1fr}
+  .about-left{border-right:none;border-bottom:1px solid var(--line);padding:48px 24px}
+  .about-right{padding:48px 24px}
+  .cta-strip{margin:0 24px;padding:40px 32px}
+  .cards-row{grid-template-columns:1fr}
+  .cards-row.two{grid-template-columns:1fr}
+  footer{padding:28px 24px;flex-direction:column;align-items:flex-start}
+  .hero-scroll{left:24px}
+}
+@media(max-width:600px){
+  .nav-links{display:none}
+  .stat-grid{grid-template-columns:1fr}
+  .stat{border-left:none;border-bottom:1px solid var(--line)}
+  .stat:last-child{border-bottom:none}
+  .sec-header{flex-direction:column;align-items:flex-start}
+  .sec-note{text-align:right;max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <div class="nav-logo">نگار کمالی</div>
+  <ul class="nav-links">
+    <li><a href="#classes">کلاس‌ها</a></li>
+    <li><a href="#about">درباره من</a></li>
+    <li><a href="contact.html" class="nav-cta">ثبت‌نام</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <canvas id="gridCanvas"></canvas>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-tag">دوره فشرده امتحانات نهایی ۱۴۰۴</div>
+    <h1 class="hero-h1">یه قدم<br/><em>قدرتمند</em><br/>تا نهایی</h1>
+    <p class="hero-sub">
+      ریاضی، حسابان و هندسه با روشی که واقعاً کار می‌کنه.<br/>
+      آنلاین، خصوصی یا گروهی — هر طور که راحتی.
+    </p>
+    <div class="hero-actions">
+      <a href="contact.html" class="btn-main">همین الان ثبت‌نام کن ←</a>
+      <a href="#classes" class="btn-ghost">کلاس‌ها رو ببین ↓</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    اسکرول کن
+  </div>
+</section>
+
+<!-- ═══ MARQUEE ═══ -->
+<div class="strip">
+  <div class="strip-inner">
+    <span class="strip-item"><span class="strip-dot"></span>ریاضی ۱ · ۲ · ۳</span>
+    <span class="strip-item"><span class="strip-dot"></span>حسابان ۱ · ۲</span>
+    <span class="strip-item"><span class="strip-dot"></span>هندسه ۱ · ۲ · ۳</span>
+    <span class="strip-item"><span class="strip-dot"></span>کلاس آنلاین</span>
+    <span class="strip-item"><span class="strip-dot"></span>کلاس خصوصی</span>
+    <span class="strip-item"><span class="strip-dot"></span>کلاس گروهی</span>
+    <span class="strip-item"><span class="strip-dot"></span>امتحانات نهایی ۱۴۰۴</span>
+    <!-- dup for seamless loop -->
+    <span class="strip-item"><span class="strip-dot"></span>ریاضی ۱ · ۲ · ۳</span>
+    <span class="strip-item"><span class="strip-dot"></span>حسابان ۱ · ۲</span>
+    <span class="strip-item"><span class="strip-dot"></span>هندسه ۱ · ۲ · ۳</span>
+    <span class="strip-item"><span class="strip-dot"></span>کلاس آنلاین</span>
+    <span class="strip-item"><span class="strip-dot"></span>کلاس خصوصی</span>
+    <span class="strip-item"><span class="strip-dot"></span>کلاس گروهی</span>
+    <span class="strip-item"><span class="strip-dot"></span>امتحانات نهایی ۱۴۰۴</span>
+  </div>
+</div>
+
+<!-- ═══ CLASSES ═══ -->
+<div class="section" id="classes">
+  <div class="sec-header">
+    <div>
+      <div class="sec-label">دروس تخصصی</div>
+      <h2 class="sec-title">انتخاب کلاست<br/>چیه؟</h2>
+    </div>
+    <p class="sec-note">هر درس با برنامه مخصوص امتحانات نهایی تدریس می‌شه — نه از اول کتاب.</p>
+  </div>
+
+  <!-- ریاضی -->
+  <div class="subject-group">
+    <div class="group-label">
+      <span class="group-dot" style="background:var(--r-dot)"></span>
+      <span class="group-name">ریاضی</span>
+      <div class="group-line"></div>
+    </div>
+    <div class="cards-row">
+      <div class="card r">
+        <span class="card-num">01</span>
+        <div class="card-bottom">
+          <div class="card-dot-wrap"><span class="card-dot"></span></div>
+          <div class="card-title">ریاضی ۱</div>
+          <div class="card-desc">پایه دهم · جبر، معادلات و مثلثات پایه</div>
+        </div>
+      </div>
+      <div class="card r">
+        <span class="card-num">02</span>
+        <div class="card-bottom">
+          <div class="card-dot-wrap"><span class="card-dot"></span></div>
+          <div class="card-title">ریاضی ۲</div>
+          <div class="card-desc">پایه یازدهم · توابع، آمار و احتمال</div>
+        </div>
+      </div>
+      <div class="card r">
+        <span class="card-num">03</span>
+        <div class="card-bottom">
+          <div class="card-dot-wrap"><span class="card-dot"></span></div>
+          <div class="card-title">ریاضی ۳</div>
+          <div class="card-desc">پایه دوازدهم · جامع‌ترین آمادگی برای کنکور</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- هندسه -->
+  <div class="subject-group">
+    <div class="group-label">
+      <span class="group-dot" style="background:var(--h-dot)"></span>
+      <span class="group-name">هندسه</span>
+      <div class="group-line"></div>
+    </div>
+    <div class="cards-row">
+      <div class="card h">
+        <span class="card-num">04</span>
+        <div class="card-bottom">
+          <div class="card-dot-wrap"><span class="card-dot"></span></div>
+          <div class="card-title">هندسه ۱</div>
+          <div class="card-desc">پایه دهم · مثلث‌ها، محیط و مساحت</div>
+        </div>
+      </div>
+      <div class="card h">
+        <span class="card-num">05</span>
+        <div class="card-bottom">
+          <div class="card-dot-wrap"><span class="card-dot"></span></div>
+          <div class="card-title">هندسه ۲</div>
+          <div class="card-desc">پایه یازدهم · چهارضلعی‌ها، دایره و قضایا</div>
+        </div>
+      </div>
+      <div class="card h">
+        <span class="card-num">06</span>
+        <div class="card-bottom">
+          <div class="card-dot-wrap"><span class="card-dot"></span></div>
+          <div class="card-title">هندسه ۳</div>
+          <div class="card-desc">پایه دوازدهم · هندسه تحلیلی و فضایی</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- حسابان -->
+  <div class="subject-group">
+    <div class="group-label">
+      <span class="group-dot" style="background:var(--c-dot)"></span>
+      <span class="group-name">حسابان</span>
+      <div class="group-line"></div>
+    </div>
+    <div class="cards-row two" style="max-width:68%;margin:0 auto">
+      <div class="card c">
+        <span class="card-num">07</span>
+        <div class="card-bottom">
+          <div class="card-dot-wrap"><span class="card-dot"></span></div>
+          <div class="card-title">حسابان ۱</div>
+          <div class="card-desc">پایه یازدهم · مشتق، توابع و کاربردها</div>
+        </div>
+      </div>
+      <div class="card c">
+        <span class="card-num">08</span>
+        <div class="card-bottom">
+          <div class="card-dot-wrap"><span class="card-dot"></span></div>
+          <div class="card-title">حسابان ۲</div>
+          <div class="card-desc">پایه دوازدهم · انتگرال و کاربردهای پیشرفته</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ABOUT ═══ -->
+<div class="about-section" id="about">
+  <div class="about-inner">
+    <div class="about-left">
+      <div class="about-visual">
+        <div class="about-visual-glow"></div>
+        <div class="about-avatar-text">👩‍💻</div>
+        <div class="about-initials">N.K</div>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="about-eyebrow">مدرس دوره</div>
+      <h2 class="about-name">مهندس<br/>نگار کمالی</h2>
+      <p class="about-role">فارغ‌التحصیل مهندسی نفت · دانشگاه شیراز</p>
+      <p class="about-bio">
+        از <strong>رتبه‌های برتر مهندسی نفت دانشگاه شیراز</strong>، مدرس رسمی مدارس نمونه تهران و بیش از شش سال سابقه تدریس خصوصی و آنلاین.
+        <br/><br/>
+        تدریسش بر این باور بنا شده که <strong>هر دانش‌آموزی می‌تونه ریاضی بفهمه</strong> — فقط باید روش درست رو پیدا کنه. کلاس‌هاش کوتاه، هدفمند و مستقیم به سراغ مطالب امتحانیه.
+      </p>
+      <div class="stat-grid">
+        <div class="stat">
+          <span class="stat-n">۶+</span>
+          <span class="stat-l">سال تدریس</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n">۸</span>
+          <span class="stat-l">دوره تخصصی</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n">۳</span>
+          <span class="stat-l">فرمت کلاس</span>
+        </div>
+      </div>
+      <a href="contact.html" class="btn-main" style="align-self:flex-start">ثبت‌نام در دوره ←</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CTA STRIP ═══ -->
+<div style="padding:0 0 120px">
+  <div class="cta-strip">
+    <div class="cta-text">
+      <h2>وقت داره تموم می‌شه — ظرفیت محدوده</h2>
+      <p>دوره‌های فشرده نهایی ۱۴۰۴ · همین الان جات رو رزرو کن.</p>
+    </div>
+    <a href="contact.html" class="btn-white">ثبت‌نام ←</a>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-logo">NIGAR KAMALI</div>
+  <div class="footer-links">
+    <a href="#classes">کلاس‌ها</a>
+    <a href="#about">درباره من</a>
+    <a href="contact.html">تماس</a>
+  </div>
+  <div class="footer-copy">© ۱۴۰۴ نگار کمالی. تمامی حقوق محفوظ است.</div>
+</footer>
+
+<script>
+// ── GRID CANVAS (hero background) ──
+(function(){
+  const canvas = document.getElementById('gridCanvas');
+  const ctx = canvas.getContext('2d');
+  let W,H,mx=0,my=0;
+
+  function resize(){
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  document.querySelector('.hero').addEventListener('mousemove',e=>{
+    const r = canvas.getBoundingClientRect();
+    mx = e.clientX - r.left;
+    my = e.clientY - r.top;
+  });
+
+  const SPACING = 60;
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    const offsetX = (mx / W - 0.5) * SPACING * 0.4;
+    const offsetY = (my / H - 0.5) * SPACING * 0.4;
+
+    ctx.strokeStyle = 'rgba(108,92,231,0.18)';
+    ctx.lineWidth = 0.5;
+
+    // vertical lines
+    for(let x = (offsetX % SPACING); x < W; x += SPACING){
+      ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();
+    }
+    // horizontal lines
+    for(let y = (offsetY % SPACING); y < H; y += SPACING){
+      ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+    }
+
+    // dot at intersections near mouse
+    const r2 = 160*160;
+    for(let x = (offsetX % SPACING); x < W; x += SPACING){
+      for(let y = (offsetY % SPACING); y < H; y += SPACING){
+        const dx=x-mx,dy=y-my;
+        if(dx*dx+dy*dy < r2){
+          const a = 1-(Math.sqrt(dx*dx+dy*dy)/160);
+          ctx.fillStyle = `rgba(139,127,240,${a*0.6})`;
+          ctx.beginPath();ctx.arc(x,y,2,0,Math.PI*2);ctx.fill();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>

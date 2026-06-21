@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ثبت‌نام | نگار کمالی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:  #0C0C0E;
+  --ink2: #111113;
+  --white:#FFFFFF;
+  --muted:#888890;
+  --line: rgba(255,255,255,0.08);
+  --v:    #6C5CE7;
+  --v2:   #8B7FF0;
+  --v3:   #4A3DBF;
+  --ease: cubic-bezier(.25,.46,.45,.94);
+}
+html{font-size:16px}
+body{
+  font-family:'Vazirmatn',sans-serif;
+  background:var(--ink);
+  color:var(--white);
+  direction:rtl;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+}
+a{text-decoration:none;color:inherit}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;right:0;left:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:68px;
+  border-bottom:1px solid var(--line);
+  background:rgba(12,12,14,0.85);
+  backdrop-filter:blur(16px);
+}
+.nav-logo{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1rem;font-weight:800;
+  letter-spacing:0.04em;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-logo::before{
+  content:'';display:inline-block;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--v);
+}
+.nav-links{display:flex;align-items:center;gap:36px;list-style:none}
+.nav-links a{
+  font-size:0.82rem;font-weight:500;
+  color:var(--muted);letter-spacing:0.06em;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-back{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:0.82rem;font-weight:500;
+  color:var(--muted);
+  transition:color .2s;
+}
+.nav-back:hover{color:var(--white)}
+
+/* ── PAGE LAYOUT ── */
+.page-wrap{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  padding-top:68px;
+  min-height:100vh;
+}
+
+/* ── LEFT — INFO PANEL ── */
+.info-panel{
+  padding:80px 56px;
+  border-left:1px solid var(--line);
+  display:flex;flex-direction:column;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  background:var(--ink2);
+}
+.info-panel::before{
+  content:'';
+  position:absolute;top:-20%;right:-10%;
+  width:50vw;height:50vw;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(108,92,231,0.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.info-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:0.7rem;font-weight:600;
+  color:var(--v2);
+  letter-spacing:0.2em;text-transform:uppercase;
+  margin-bottom:28px;
+}
+.info-eyebrow::before{
+  content:'';display:inline-block;
+  width:14px;height:1px;background:var(--v);
+}
+.info-h1{
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:900;
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  color:var(--white);
+  margin-bottom:20px;
+}
+.info-sub{
+  font-size:0.92rem;
+  color:rgba(255,255,255,0.45);
+  line-height:1.85;
+  margin-bottom:56px;
+}
+
+/* contact items */
+.contact-list{
+  display:flex;flex-direction:column;
+  gap:0;
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+  margin-bottom:40px;
+}
+.contact-item{
+  display:flex;align-items:center;gap:18px;
+  padding:22px 24px;
+  border-bottom:1px solid var(--line);
+  transition:background .2s;
+}
+.contact-item:last-child{border-bottom:none}
+.contact-item:hover{background:rgba(255,255,255,0.03)}
+.ci-icon{
+  width:40px;height:40px;
+  border-radius:8px;
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;
+  flex-shrink:0;
+  background:rgba(255,255,255,0.03);
+}
+.ci-label{
+  font-size:0.7rem;font-weight:600;
+  color:var(--muted);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  margin-bottom:3px;
+}
+.ci-value{
+  font-size:0.95rem;font-weight:600;
+  color:var(--white);
+  direction:ltr;text-align:right;
+}
+.ci-value.fa{direction:rtl;text-align:right}
+
+/* hours */
+.hours-block{
+  border:1px solid var(--line);
+  border-radius:6px;
+  overflow:hidden;
+}
+.hours-header{
+  padding:14px 24px;
+  border-bottom:1px solid var(--line);
+  font-size:0.7rem;font-weight:700;
+  color:var(--muted);letter-spacing:0.14em;text-transform:uppercase;
+}
+.hours-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 24px;
+  border-bottom:1px solid var(--line);
+  font-size:0.82rem;
+}
+.hours-row:last-child{border-bottom:none}
+.h-day{color:rgba(255,255,255,0.6);font-weight:500}
+.h-badge{
+  font-size:0.7rem;font-weight:700;
+  padding:3px 12px;border-radius:50px;
+  letter-spacing:0.06em;
+}
+.open{background:rgba(0,191,166,0.12);color:#00BFA6}
+.closed{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.3)}
+
+/* ── RIGHT — FORM ── */
+.form-panel{
+  padding:80px 56px;
+  display:flex;flex-direction:column;
+  justify-content:center;
+}
+.form-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:0.7rem;font-weight:600;
+  color:var(--v2);
+  letter-spacing:0.2em;text-transform:uppercase;
+  margin-bottom:20px;
+}
+.form-eyebrow::before{
+  content:'';display:inline-block;
+  width:14px;height:1px;background:var(--v);
+}
+.form-h2{
+  font-size:clamp(1.5rem,2.5vw,2.2rem);
+  font-weight:900;
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  color:var(--white);
+  margin-bottom:8px;
+}
+.form-sub{
+  font-size:0.85rem;
+  color:var(--muted);
+  margin-bottom:44px;
+  line-height:1.7;
+}
+
+/* form fields */
+.field{margin-bottom:20px}
+label{
+  display:block;
+  font-size:0.75rem;font-weight:700;
+  color:rgba(255,255,255,0.45);
+  letter-spacing:0.1em;text-transform:uppercase;
+  margin-bottom:8px;
+}
+input,select,textarea{
+  width:100%;
+  font-family:'Vazirmatn',sans-serif;
+  font-size:0.9rem;
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  background:var(--ink2);
+  color:var(--white);
+  direction:rtl;
+  outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  appearance:none;
+  -webkit-appearance:none;
+}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.2)}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--v);
+  box-shadow:0 0 0 3px rgba(108,92,231,0.15);
+}
+select{
+  cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.3)' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:left 14px center;
+  padding-left:36px;
+}
+select option{background:var(--ink);color:var(--white)}
+textarea{resize:vertical;min-height:100px;line-height:1.7}
+
+.fields-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+.btn-submit{
+  width:100%;
+  font-family:'Vazirmatn',sans-serif;
+  font-size:0.95rem;font-weight:800;
+  padding:17px;
+  border:none;border-radius:4px;
+  background:var(--v);
+  color:var(--white);
+  cursor:pointer;
+  letter-spacing:0.03em;
+  transition:background .25s,transform .2s,box-shadow .25s;
+  margin-top:8px;
+}
+.btn-submit:hover{
+  background:var(--v2);
+  transform:translateY(-2px);
+  box-shadow:0 12px 36px rgba(108,92,231,0.35);
+}
+.btn-submit:disabled{
+  opacity:.5;cursor:default;
+  transform:none;box-shadow:none;
+}
+
+.success{
+  display:none;
+  margin-top:16px;
+  padding:16px 20px;
+  border-radius:4px;
+  border:1px solid rgba(0,191,166,0.3);
+  background:rgba(0,191,166,0.08);
+  color:#00BFA6;
+  font-size:0.88rem;font-weight:600;
+  text-align:center;
+}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--line);
+  padding:28px 48px;
+  display:flex;align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-logo{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:0.85rem;font-weight:800;
+  color:rgba(255,255,255,0.25);letter-spacing:0.06em;
+}
+.footer-copy{font-size:0.72rem;color:rgba(255,255,255,0.18)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:0 24px}
+  .page-wrap{grid-template-columns:1fr}
+  .info-panel{
+    padding:56px 28px;
+    border-left:none;border-bottom:1px solid var(--line);
+  }
+  .form-panel{padding:56px 28px}
+  footer{padding:24px 24px;flex-direction:column;align-items:flex-start}
+}
+@media(max-width:600px){
+  .nav-links{display:none}
+  .fields-row{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">نگار کمالی</div>
+  <ul class="nav-links">
+    <li><a href="index.html#classes">کلاس‌ها</a></li>
+    <li><a href="index.html#about">درباره من</a></li>
+  </ul>
+  <a href="index.html" class="nav-back">← بازگشت</a>
+</nav>
+
+<!-- MAIN -->
+<div class="page-wrap">
+
+  <!-- INFO -->
+  <div class="info-panel">
+    <div class="info-eyebrow">اطلاعات تماس</div>
+    <h1 class="info-h1">بیا باهم<br/>شروع کنیم</h1>
+    <p class="info-sub">سوال داری؟ می‌خوای بدونی کدوم کلاس بهت می‌خوره؟<br/>هر طور که راحتی — زنگ بزن، ایمیل بده، یا همین فرم رو پر کن.</p>
+
+    <div class="contact-list">
+      <a href="tel:+989912087516" class="contact-item">
+        <div class="ci-icon">📞</div>
+        <div>
+          <div class="ci-label">تماس مستقیم</div>
+          <div class="ci-value">0991 208 7516</div>
+        </div>
+      </a>
+      <a href="mailto:Nkamali800@gmail.com" class="contact-item">
+        <div class="ci-icon">✉️</div>
+        <div>
+          <div class="ci-label">ایمیل</div>
+          <div class="ci-value">Nkamali800@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://wa.me/989912087516" target="_blank" rel="noopener" class="contact-item">
+        <div class="ci-icon">💬</div>
+        <div>
+          <div class="ci-label">واتساپ / تلگرام</div>
+          <div class="ci-value fa">۰۹۹۱۲۰۸۷۵۱۶</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="hours-block">
+      <div class="hours-header">ساعات پاسخگویی</div>
+      <div class="hours-row">
+        <span class="h-day">شنبه — چهارشنبه</span>
+        <span class="h-badge open">۹ صبح تا ۱۰ شب</span>
+      </div>
+      <div class="hours-row">
+        <span class="h-day">پنجشنبه</span>
+        <span class="h-badge open">۹ صبح تا ۳ بعدازظهر</span>
+      </div>
+      <div class="hours-row">
+        <span class="h-day">جمعه</span>
+        <span class="h-badge closed">تعطیل</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-panel">
+    <div class="form-eyebrow">ثبت‌نام در دوره</div>
+    <h2 class="form-h2">اطلاعاتت رو<br/>اینجا بذار</h2>
+    <p class="form-sub">ظرف کمتر از ۲۴ ساعت باهات تماس می‌گیریم.</p>
+
+    <div class="field">
+      <label for="name">نام و نام خانوادگی</label>
+      <input type="text" id="name" placeholder="علی احمدی"/>
+    </div>
+
+    <div class="fields-row">
+      <div class="field">
+        <label for="phone">شماره موبایل</label>
+        <input type="tel" id="phone" placeholder="۰۹۱۲۳۴۵۶۷۸۹"/>
+      </div>
+      <div class="field">
+        <label for="grade">پایه تحصیلی</label>
+        <select id="grade">
+          <option value="" disabled selected>انتخاب کن</option>
+          <option>دهم</option>
+          <option>یازدهم</option>
+          <option>دوازدهم</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="course">درس مورد نظر</label>
+      <select id="course">
+        <option value="" disabled selected>انتخاب کن</option>
+        <optgroup label="ریاضی">
+          <option>ریاضی ۱</option>
+          <option>ریاضی ۲</option>
+          <option>ریاضی ۳</option>
+        </optgroup>
+        <optgroup label="هندسه">
+          <option>هندسه ۱</option>
+          <option>هندسه ۲</option>
+          <option>هندسه ۳</option>
+        </optgroup>
+        <optgroup label="حسابان">
+          <option>حسابان ۱</option>
+          <option>حسابان ۲</option>
+        </optgroup>
+        <option>چند درس (توضیح در پیام)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="type">نوع کلاس</label>
+      <select id="type">
+        <option value="" disabled selected>انتخاب کن</option>
+        <option>آنلاین</option>
+        <option>خصوصی (حضوری)</option>
+        <option>گروهی</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="msg">پیام (اختیاری)</label>
+      <textarea id="msg" placeholder="هر چیزی که بخوای بگی..."></textarea>
+    </div>
+
+    <button class="btn-submit" id="submitBtn" onclick="send()">ارسال و ثبت‌نام ←</button>
+    <div class="success" id="ok">✓ پیامت ثبت شد. به زودی باهات تماس می‌گیریم!</div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NIGAR KAMALI</div>
+  <div class="footer-copy">© ۱۴۰۴ نگار کمالی · تمامی حقوق محفوظ است</div>
+</footer>
+
+<script>
+function send(){
+  const n=document.getElementById('name').value.trim();
+  const p=document.getElementById('phone').value.trim();
+  const g=document.getElementById('grade').value;
+  const c=document.getElementById('course').value;
+  const t=document.getElementById('type').value;
+  if(!n||!p||!g||!c||!t){alert('لطفاً تمامی فیلدهای ضروری را پر کنید.');return;}
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true;btn.textContent='ارسال شد ✓';
+  document.getElementById('ok').style.display='block';
+}
+</script>
+</body>
+</html>
