@@ -22,4 +22,4 @@ A modern portfolio website for a mathematics teacher.
 
 ## Live Demo
 
-https://kimkazi.github.io/math-teacher-portfolio/
+https://kimkazi.github.io/negar-math/
